@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const CONTENT = {
   name: "Gustavo Orlandini",
@@ -9,11 +10,19 @@ const CONTENT = {
   ctaLabel: "Me contrate",
   ctaHref: "mailto:guorlandini@outlook.com",
   photo: "/gustavo.png",
-  navLinks: ["Página Inicial", "Sobre", "Serviços", "Portfólio", "Contato"],
+  navLinks: ["Home", "About", "Services", "Portfolio", "Contact"],
 };
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+
+  const routes = {
+    Home: "/",
+    About: "/em_construcao",
+    Services: "/em_construcao",
+    Portfolio: "/em_construcao",
+    Contact: "/em_construcao",
+  };
 
   // efeito do cursor glow
   useEffect(() => {
@@ -39,7 +48,7 @@ export default function Home() {
           <ul className="nav__links">
             {CONTENT.navLinks.map((l) => (
               <li key={l}>
-                <a href="#">{l}</a>
+                <Link href={routes[l]}>{l}</Link>
               </li>
             ))}
           </ul>
