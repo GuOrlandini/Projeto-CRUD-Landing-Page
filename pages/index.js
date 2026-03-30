@@ -53,7 +53,7 @@ export default function Home() {
         {/* ── NAV ── */}
         <nav className={`nav ${loaded ? "nav--in" : ""}`}>
           <span className="nav__logo">
-            Gh<span>Orlandini</span>
+            Gu<span>Orlandini</span>
           </span>
           <ul className="nav__links">
             {CONTENT.navLinks.map((l) => (
