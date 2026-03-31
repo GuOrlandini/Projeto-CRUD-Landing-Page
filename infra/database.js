@@ -1,18 +1,10 @@
 import { Client } from "pg"; // A classe client: cria uma conexão TCP com o Postgres, autentica usuário, envia queries SQL e recebe resultados
 
 async function query(queryObject) {
-  const client = new Client({
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
-    user: process.env.POSTGRES_USER,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    ssl: process.env.NODE_ENV === "development" ? false : true,
-  }); // aqui é criado uma instância de conexão, esse objeto contém: host, port, user, password e database
-
+  let client;
   // tratamento de erro para que as requisições sejam devidamente fechadas
   try {
-    await client.connect();
+    client = await getNewClient(); // aqui é criado uma instância de conexão, esse objeto contém: host, port, user, password e database
     const result = await client.query(queryObject); // envia sql para server -> postgres executa -> recebe resultado -> converte em objeto JS
     return result;
   } catch (error) {
@@ -23,6 +15,21 @@ async function query(queryObject) {
   }
 }
 
+async function getNewClient() {
+  const client = new Client({
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    user: process.env.POSTGRES_USER,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    ssl: process.env.NODE_ENV === "production" ? true : false,
+  });
+
+  await client.connect();
+  return client;
+}
+
 export default {
-  query: query,
+  query,
+  getNewClient,
 };
